@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,6 +16,7 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
   </head>
   <body>
-    <h1>SUCCESSFUL!</h1>
+    <h1>RESTAURANT PAGE</h1>
+    <p><a href="{% url 'restaurant-sign-out' %}">Log Out</a></p>
   </body>
 </html>
