@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from foodtaskerapp import views
 from django.contrib.auth import views as auth_views
 
@@ -40,6 +40,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+
+    # Restaurant
     path('restaurant/sign-in/', auth_views.LoginView.as_view(
         template_name='restaurant/sign_in.html'), name='restaurant-sign-in'),
     path('restaurant/sign-out/', auth_views.LogoutView.as_view(next_page='/'),
@@ -47,4 +49,11 @@ urlpatterns = [
     path('restaurant/', views.restaurant_home, name='restaurant-home'),
     path('restaurant/sign-up/', views.restaurant_sign_up,
          name='restaurant-sign-up'),
+
+    #  Sign in / Sign up / Sign out
+    path('api/social/', include('rest_framework_social_oauth2.urls')),
+
+    # Convert token (sign in/ sign up)
+
+    # revoke token (sign out)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
