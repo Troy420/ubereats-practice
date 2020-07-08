@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+import dj_database_url
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -130,3 +131,6 @@ MEDIA_URL = '/media/'
 # STATIC_HOST = os.environ.get('DJANGO_STATIC_HOST', '')
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
