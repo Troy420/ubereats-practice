@@ -26,7 +26,9 @@ SECRET_KEY = '5pduo=3=$g7c%3huv+8!y(j##%a%7h2t*86w4eoll!zu&5@6-)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+]
 
 
 # Application definition
@@ -37,12 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'foodtaskerapp',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -128,9 +132,8 @@ LOGIN_REDIRECT_URL = '/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# STATIC_HOST = os.environ.get('DJANGO_STATIC_HOST', '')
-
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
+
+STATIC_HOST = os.environ.get('DJANGO_STATIC_HOST', '')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
