@@ -12,14 +12,24 @@
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
-    <!-- BOOTSTRAP JS -->
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
     <!-- JQUERY -->
     <script src="{% static 'js/jquery.min.js' %}"></script>
+    
+    <!-- BOOTSTRAP JS -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
   </head>
   <body>
-    <h1>{% block page %}{% endblock %}</h1>
-    {%block sidebar%} {%endblock%}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-2 col-md-2 col-sm-2 sidebar">
+          {%block sidebar%} {%endblock%}
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-10">
+          {% block page %}{% endblock %}
+        </div>
+      </div>
+    </div>
+   
   </body>
 </html>
