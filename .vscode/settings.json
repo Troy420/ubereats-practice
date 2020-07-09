@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "uberEatsVenv\\Scripts\\python.exe"
+  "python.pythonPath": "uberEatsVenv\\Scripts\\python.exe",
+  "python.linting.pylintArgs": ["--load-plugins", "pylint_django"]
 }
