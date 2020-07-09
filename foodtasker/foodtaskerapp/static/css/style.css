@@ -1,0 +1,23 @@
+:root {
+    --main-bg-blue: #3f3f63;
+    --main-btn-pink: #ee5462;
+    --main-txt-color: #ffffff;
+
+    --hover-btn-pink: #da4f5d;
+  }
+
+.bg-blue{
+    background-color: var(--main-bg-blue);
+}
+
+.btn-pink{
+    color: var(--main-txt-color);
+    background-color: var(--main-btn-pink);
+    border: none;
+}
+
+.btn-pink:hover,
+.btn-pink:focus{
+    color: var(--main-txt-color);
+    background-color: var(--hover-btn-pink);
+}

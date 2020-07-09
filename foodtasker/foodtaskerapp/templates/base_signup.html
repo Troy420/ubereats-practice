@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- BOOTSTRAP CSS-->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <!-- BOOTSTRAP JS -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- JQUERY -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+
+  </head>
+  <body class="bg-blue">
+    <div class="container vh-100 d-lg-flex d-md-flex align-items-center justify-content-center">
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="text-center text-uppercase">
+                {%block header%}{%endblock%}
+              </h3>
+              {%block content%}{%endblock%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
