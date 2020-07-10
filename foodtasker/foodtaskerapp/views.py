@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from foodtaskerapp.forms import UserForm, RestaurantForm, UserFormForEdit, MealForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from foodtaskerapp.models import Meal
 
 # Create your views here.
 
@@ -37,7 +38,8 @@ def restaurant_account(request):
 
 @login_required(login_url='/restaurant/sign-in/')
 def restaurant_meal(request):
-    return render(request, 'restaurant/meal.html', {})
+    meals = Meal.objects.filter(restaurant = request.user.restaurant).order_by("-id")
+    return render(request, 'restaurant/meal.html', {"meals": meals})
 
 
 @login_required(login_url='/restaurant/sign-in/')
@@ -48,13 +50,28 @@ def restaurant_add_meal(request):
         addMeal_form = MealForm(request.POST, request.FILES)
 
         if addMeal_form.is_valid():
-            meal = addMeal_form.save(commit=False) # Save in the memory, not in the database 
+            meal = addMeal_form.save(commit=False) # Save in the memory, not in the database yet
             meal.restaurant = request.user.restaurant
-            meal.save()
+            meal.save() # now save to database
             return redirect(restaurant_meal)
 
     return render(request, 'restaurant/add_meal.html', {
         "addMeal_form": addMeal_form
+    })
+
+@login_required(login_url='/restaurant/sign-in/')
+def restaurant_edit_meal(request, meal_id):
+    editMeal_form = MealForm(instance = Meal.objects.get(id = meal_id))
+
+    if request.method == "POST":
+        editMeal_form = MealForm(request.POST, request.FILES, instance = Meal.objects.get(id = meal_id))
+
+        if editMeal_form.is_valid():
+            editMeal_form.save() # now save to database
+            return redirect(restaurant_meal)
+
+    return render(request, 'restaurant/edit_meal.html', {
+        "editMeal_form": editMeal_form
     })
 
 

@@ -55,6 +55,8 @@ urlpatterns = [
          name='restaurant-meal'),
     path('restaurant/meal/add/', views.restaurant_add_meal,
          name='restaurant-add-meal'),
+    path('restaurant/meal/edit/<meal_id>/', views.restaurant_edit_meal,
+         name='restaurant-edit-meal'),
     path('restaurant/order/', views.restaurant_order,
          name='restaurant-order'),
     path('restaurant/report/', views.restaurant_report,
