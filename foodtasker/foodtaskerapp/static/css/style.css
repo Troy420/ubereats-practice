@@ -56,6 +56,10 @@
     background: var(--main-bg-logo);
 }
 
+.sidebar > div:first-child img{
+    margin-bottom: 10px;
+}
+
 .sidebar > div:first-child h4{
     color: var(--main-h4-color);
 }
@@ -74,7 +78,7 @@
     color: var(--main-h5-color);
     display: block;
     margin-top: 20px;
-    padding: 20px 30px;
+    padding: 10px 30px;
     font-size: 16px;
     font-weight: 300;
 }

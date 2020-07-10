@@ -1,2 +1,10 @@
-{%extends 'restaurant/base.html'%} {%block title%} Restaurant Meal {%endblock%}
-{%block page%} Restaurant Meal Page {%endblock%}
+{%extends 'restaurant/base.html'%} 
+
+{%block title%} 
+    Restaurant Meal 
+{%endblock%}
+
+{%block page%} 
+    <h3>Restaurant Meal Page</h3> 
+    <a href="{% url 'restaurant-add-meal' %}" class="btn btn-pink">Add Meal</a>
+{%endblock%}

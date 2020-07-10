@@ -1,0 +1,25 @@
+{%extends 'restaurant/base.html'%} 
+{% load bootstrap4 %}
+
+{%block title%} 
+    Restaurant Add Meal 
+{%endblock%}
+
+{%block page%} 
+    <div class="offset-lg-2 col-lg-8">
+        <div class="card">
+            <div class="card-header bg-blue">
+                <h4 class="card-title text-center text-white">
+                    Account
+                </h4>
+            </div>
+            <div class="card-body">
+                <form enctype="multipart/form-data" method="post">
+                    {% csrf_token %}
+                    {% bootstrap_form addMeal_form %}
+                    <button type="submit" class="btn btn-pink">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{%endblock%}
