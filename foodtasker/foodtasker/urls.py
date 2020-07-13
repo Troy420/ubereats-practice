@@ -61,6 +61,7 @@ urlpatterns = [
          name='restaurant-order'),
     path('restaurant/report/', views.restaurant_report,
          name='restaurant-report'),
+     
 
     #  Sign in / Sign up / Sign out
     path('api/social/', include('rest_framework_social_oauth2.urls')),
@@ -69,6 +70,12 @@ urlpatterns = [
 
     # revoke token (sign out)
 
+     # APIs for CUSTOMERS
     path('api/customer/restaurants/', apis.customer_get_all_restaurant_lists),
+    path('api/customer/meals/<int:restaurant_id>/', apis.customer_get_all_menu),
+    path('api/customer/order/add/', apis.customer_add_order),
+    path('api/customer/order/latest/', apis.customer_get_latest_order),
+
+    path('api/restaurant/order/notification/<str:last_request_time>/', apis.restaurant_order_notification ),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

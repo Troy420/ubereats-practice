@@ -74,7 +74,7 @@
     background-color: var(--main-bg-blue);
 }
 
-.sidebar .list-group span {
+.sidebar .list-group > span {
     color: var(--main-h5-color);
     display: block;
     margin-top: 20px;
@@ -103,8 +103,8 @@
     border-top-right-radius: 0;
 }
 
-.sidebar .list-group .list-group-item .badge,
-.sidebar .list-group .list-group-item.active .badge{
+.sidebar .list-group .list-group-item span.badge,
+.sidebar .list-group .list-group-item.active span.badge{
     background-color: var(--main-btn-pink);
     color: var(--main-h4-color);
 }
