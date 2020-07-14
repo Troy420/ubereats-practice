@@ -8,6 +8,9 @@ from oauth2_provider.models import AccessToken
 from foodtaskerapp.models import Restaurant, Meal, Order, OrderDetails
 from foodtaskerapp.serializers import RestaurantSerializer, MealSerializer, OrderSerializer
 
+# --------------------
+# CUSTOMER
+# --------------------
 def customer_get_all_restaurant_lists(request):
     restaurants = RestaurantSerializer(
         Restaurant.objects.all().order_by("-id"),
@@ -104,9 +107,65 @@ def customer_get_latest_order(request):
 
     return JsonResponse({"order": order})
 
-
+# ---------------------
+# RESTAURANT
+# ---------------------
 def restaurant_order_notification(request, last_request_time):
     notification = Order.objects.filter(restaurant = request.user.restaurant, 
     created_at__gt = last_request_time).count()
 
     return JsonResponse({"notification": notification})
+
+# ---------------------
+# DRIVER
+# ---------------------
+
+def driver_get_ready_orders(request):
+    orders = OrderSerializer(
+        Order.objects.filter(status = Order.READY, driver = None).order_by("-id"),
+        many=True
+    ).data
+    return JsonResponse({"orders": orders})
+
+@csrf_exempt
+# POST params: access_token, order_id
+def driver_pick_order(request):
+
+    if request.method == "POST":
+        #GET token
+        access_token = AccessToken.objects.get(token = request.POST.get("access_token"),
+        expires__gt = timezone.now())
+
+        #GET Driver
+        driver = access_token.user.driver
+
+        #Check if the driver can only pick up on order at a time
+        if Order.objects.filter(driver = driver).exclude(status = Order.OTW and Order.DELIVERED):
+            return JsonResponse({"status": "failed", "error": "you can only pick one order at a time"})
+
+        try:
+            order = Order.objects.get(
+                id = request.POST['order_id'],
+                driver = None,
+                status = Order.READY,
+            )
+            order.driver = driver
+            order.status = Order.OTW
+            order.picked_at = timezone.now()
+            order.save()
+
+            return JsonResponse({"status": "success"})
+
+        except Order.DoesNotExist:
+            return JsonResponse({"status": "failed", "error": "This order has been picked up by another driver"})
+
+    # return JsonResponse({})
+
+def driver_get_latest_order(request):
+    return JsonResponse({})
+
+def driver_complete_order(request):
+    return JsonResponse({})
+
+def driver_get_revenue(request):
+    return JsonResponse({})

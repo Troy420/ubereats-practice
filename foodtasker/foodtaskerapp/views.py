@@ -82,12 +82,12 @@ def restaurant_order(request):
         if order.status == Order.COOKING:
             order.status = Order.READY
             order.save()
-        elif order.status == Order.READY:
-            order.status = Order.OTW
-            order.save()
-        elif order.status == Order.OTW:
-            order.status = Order.DELIVERED
-            order.save()
+        # elif order.status == Order.READY:
+        #     order.status = Order.OTW
+        #     order.save()
+        # elif order.status == Order.OTW:
+        #     order.status = Order.DELIVERED
+        #     order.save()
         # else:
         #     order.status = "Already Delivered"
 
