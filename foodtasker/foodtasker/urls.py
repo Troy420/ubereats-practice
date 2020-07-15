@@ -64,6 +64,8 @@ urlpatterns = [
      
     #  Sign in / Sign up / Sign out
     path('api/social/', include('rest_framework_social_oauth2.urls')),
+    path('oauth/', include('social_django.urls', namespace='socialAuth')),
+     # path('accounts/', include('allauth.urls')),
     # Convert token (sign in/ sign up)
     # revoke token (sign out)
 

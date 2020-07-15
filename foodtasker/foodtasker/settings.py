@@ -41,11 +41,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    # 'django.contrib.sites',
     'foodtaskerapp',
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
     'bootstrap4',
+
+    # local
+    # 'user',
+
+    # allauth
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+
+    # providers
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -132,6 +145,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+SITE_ID= 1
 
 LOGIN_REDIRECT_URL = '/'
 

@@ -1,0 +1,25 @@
+{% extends 'base_signup.html' %}
+{% load bootstrap4 %}
+
+{% block title %}
+  Sign Up
+{% endblock %}
+
+{% block header %}
+  Restaurant - Sign Up
+{% endblock %}
+
+{% block content %}
+  <form method="POST" enctype="multipart/form-data" class="d-flex flex-wrap">
+    {% csrf_token %} 
+    <div class="flex-column p-3 col-lg-12 col-md-12">
+      {% bootstrap_form restaurant_form %}
+    </div>
+    <div class="column w-100">
+      <button type="submit" class="btn btn-pink w-100 text-uppercase">Sign Up</button>
+    </div>
+  </form>
+  <a href="{%url 'restaurant-sign-in'%}">Already have an account?</a>
+{% endblock %}
+
+
