@@ -4,7 +4,75 @@
     Restaurant Report
 {%endblock %} 
 
+{% block script %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+{% endblock %}
 
 {%block page%} 
-    Restaurant Report Page 
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Revenue by week -->
+            <div class="card">
+                <div class="card-header bg-blue">
+                    <h4 class="card-title text-center text-white">
+                        Revenue by Week
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" height="110">
+                        <script>
+                            let revenue_ctx = document.getElementById("revenueChart").getContext("2d");
+                            let revenue_data = {
+                                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                                datasets: [
+                                    {
+                                        label: "Revenue by Week",
+                                        backgroundColor: "rgba(54,162,235,0.9)",
+                                        hoverBackgroundColor: "rgba(54,162,235,1)",
+                                        data: {{revenue}}
+                                    }
+                                ]
+                            };
+
+                            new Chart(revenue_ctx, {
+                                type: 'bar',
+                                data: revenue_data
+                            });
+                        </script>
+                    </canvas>
+                </div>
+            </div>
+            <!-- Order by week -->
+            <div class="card">
+                <div class="card-header bg-blue">
+                    <h4 class="card-title text-center text-white">
+                        Order by Week
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="orderChart" height="110">
+                        <script>
+                            let order_ctx = document.getElementById("orderChart").getContext("2d");
+                            let order_data = {
+                                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                                datasets: [
+                                    {
+                                        label: "Order by Week",
+                                        backgroundColor: "rgba(255,99,132,0.9)",
+                                        hoverBackgroundColor: "rgba(255,99,132,1)",
+                                        data: {{orders}}
+                                    }
+                                ]
+                            };
+
+                            new Chart(order_ctx, {
+                                type: 'bar',
+                                data: order_data
+                            });
+                        </script>
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 {%endblock%}

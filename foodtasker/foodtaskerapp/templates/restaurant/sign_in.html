@@ -6,12 +6,11 @@
 
 
 {% block content %}
-
   <form method="POST" class="d-flex flex-column p-5">
     {% csrf_token %} 
     {% bootstrap_form form %}
     <button type="submit" class="btn btn-pink mt-4 text-uppercase">Sign In</button>
   </form>
-  <a href="{%url 'restaurant-sign-up'%}">Become a Restaurant</a>
+  <a href="{% url 'restaurant-sign-up' %}">Become a Restaurant</a>
 
 {% endblock %}

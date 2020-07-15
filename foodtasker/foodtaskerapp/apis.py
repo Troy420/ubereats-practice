@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from oauth2_provider.models import AccessToken
 
-from foodtaskerapp.models import Restaurant, Meal, Order, OrderDetails
+from foodtaskerapp.models import Restaurant, Meal, Order, OrderDetails, Driver
 from foodtaskerapp.serializers import RestaurantSerializer, MealSerializer, OrderSerializer
 
 # --------------------
@@ -107,6 +107,19 @@ def customer_get_latest_order(request):
 
     return JsonResponse({"order": order})
 
+
+def customer_driver_location(request):
+    access_token = AccessToken.objects.get(token = request.GET.get("access_token"),
+        expires__gt = timezone.now())
+
+    customer = access_token.user.customer
+
+    # GET driver's location
+    current_order = Order.objects.filter(customer = customer, status = Order.OTW).last()
+    location = current_order.driver.location
+
+    return JsonResponse({"location": location})
+
 # ---------------------
 # RESTAURANT
 # ---------------------
@@ -120,15 +133,16 @@ def restaurant_order_notification(request, last_request_time):
 # DRIVER
 # ---------------------
 
+# GET ready orders
 def driver_get_ready_orders(request):
-    orders = OrderSerializer(
+    ready_orders = OrderSerializer(
         Order.objects.filter(status = Order.READY, driver = None).order_by("-id"),
         many=True
     ).data
-    return JsonResponse({"orders": orders})
+    return JsonResponse({"ready_orders": ready_orders})
 
 @csrf_exempt
-# POST params: access_token, order_id
+# POST body: access_token, order_id
 def driver_pick_order(request):
 
     if request.method == "POST":
@@ -179,8 +193,70 @@ def driver_get_latest_order(request):
 
     return JsonResponse({"latest_order": latest_order})
 
+# POST body
+# what information do we need from the database?
+# access_token, driver, order_id
+@csrf_exempt
 def driver_complete_order(request):
-    return JsonResponse({})
+     #GET token
+    access_token = AccessToken.objects.get(token = request.POST.get("access_token"),
+    expires__gt = timezone.now())
 
+    #GET Driver
+    driver = access_token.user.driver
+
+    # GET order_status
+    # order_status = OrderSerializer(
+    #     Orders.objects.filter(driver = driver, status = Order.OTW).order_by("-id")
+    # ).data
+
+    # GET order_id
+    order  = Order.objects.get(driver = driver, id = request.POST['order_id'], status = Order.OTW)
+    order.status = Order.DELIVERED
+    order.save()
+
+    return JsonResponse({"status": "success"})
+
+# GET access_token
 def driver_get_revenue(request):
+    access_token = AccessToken.objects.get(token = request.GET.get("access_token"),
+        expires__gt = timezone.now()
+    )
+
+    driver = access_token.user.driver
+
+    from datetime import timedelta
+
+    revenue = {}
+    today = timezone.now()
+    current_weekdays = [today + timedelta(days = i) for i in range(0 - today.weekday(), 7 - today.weekday() )]
+
+    for day in current_weekdays:
+        orders = Order.objects.filter(
+            driver = driver,
+            status = Order.DELIVERED,
+            created_at__year = day.year,
+            created_at__month = day.month,
+            created_at__day = day.day,
+        )
+
+        revenue[day.strftime('%a')] = sum(order.total for order in orders)
+
+    return JsonResponse({"revenue": revenue})
+
+# POST - body : access_token, latitude, longtitude
+@csrf_exempt
+def driver_update_location(request):
+    if request.method == 'POST':
+        access_token = AccessToken.objects.get(token = request.POST.get("access_token"),
+        expires__gt = timezone.now())
+
+        driver = access_token.user.driver
+
+        # Set location string -> database
+        driver.location = request.POST['location']
+        driver.save()
+
+        return JsonResponse({"status": "success"})
+
     return JsonResponse({})

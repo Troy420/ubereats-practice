@@ -62,7 +62,6 @@ urlpatterns = [
     path('restaurant/report/', views.restaurant_report,
          name='restaurant-report'),
      
-
     #  Sign in / Sign up / Sign out
     path('api/social/', include('rest_framework_social_oauth2.urls')),
     # Convert token (sign in/ sign up)
@@ -76,13 +75,14 @@ urlpatterns = [
     path('api/customer/meals/<int:restaurant_id>/', apis.customer_get_all_menu),
     path('api/customer/order/add/', apis.customer_add_order),
     path('api/customer/order/latest/', apis.customer_get_latest_order),
+    path('api/customer/driver/location/', apis.customer_driver_location),
 
      # APIs for DRIVERS
      path('api/driver/orders/ready/', apis.driver_get_ready_orders),
      path('api/driver/orders/pick/', apis.driver_pick_order),
      path('api/driver/orders/latest/', apis.driver_get_latest_order),
      path('api/driver/orders/complete/', apis.driver_complete_order),
-     path('api/driver/orders/revenue/', apis.driver_get_revenue),
-     
+     path('api/driver/revenue/', apis.driver_get_revenue),
+     path('api/driver/location/update/', apis.driver_update_location),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

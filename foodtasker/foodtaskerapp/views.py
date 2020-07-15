@@ -97,7 +97,31 @@ def restaurant_order(request):
 
 @login_required(login_url='/restaurant/sign-in/')
 def restaurant_report(request):
-    return render(request, 'restaurant/report.html', {})
+    # calculate revenue and number of order by current week
+    from datetime import datetime, timedelta
+
+    revenue = []
+    orders = []
+
+    #calculate weekdays
+    today = datetime.now()
+    current_weekdays = [today + timedelta(days = i) for i in range(0 - today.weekday(), 7 - today.weekday() )]
+
+    for day in current_weekdays:
+        deliveredOrders = Order.objects.filter(
+            restaurant = request.user.restaurant,
+            status = Order.DELIVERED,
+            created_at__year = day.year,
+            created_at__month = day.month,
+            created_at__day = day.day,
+        )
+        revenue.append(sum(order.total for order in deliveredOrders))
+        orders.append(deliveredOrders.count())
+
+    return render(request, 'restaurant/report.html', {
+        "revenue": revenue,
+        "orders": orders
+    })
 
 
 def restaurant_sign_up(request):
